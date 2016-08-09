@@ -1,0 +1,21 @@
+{
+	"folders":
+	[
+		{
+			"path": ".",
+			"file_include_patterns": [
+				"CONTAINERNAME",
+				".gitignore",
+				".gitattributes",
+				"*.sublime-project",
+				"*.sh",
+				"Dockerfile",
+				"project.json",
+				"*.sln",
+				"*.log",
+				"LICENSE",
+				"README.md"
+			]
+		}
+	]
+}

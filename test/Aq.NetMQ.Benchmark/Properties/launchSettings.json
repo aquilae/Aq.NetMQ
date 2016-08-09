@@ -1,0 +1,19 @@
+{
+  "profiles": {
+    "Aq.NetMQ.Benchmark": {
+      "commandName": "Project"
+    },
+    "PlainRoundtrip.Naive": {
+      "commandName": "Project",
+      "commandLineArgs": "PlainRoundtrip.Naive"
+    },
+    "PlainRoundtrip.NetMQPoller": {
+      "commandName": "Project",
+      "commandLineArgs": "PlainRoundtrip.NetMQPoller"
+    },
+    "PlainRoundtrip.AsyncPoller": {
+      "commandName": "Project",
+      "commandLineArgs": "PlainRoundtrip.AsyncPoller"
+    }
+  }
+}

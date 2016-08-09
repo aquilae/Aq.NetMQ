@@ -1,0 +1,83 @@
+﻿{
+  "version": "0.0.1-*",
+
+  "title": "Aq.NetMQ",
+  "authors": [
+    "Ilya \"aq\" Kozlov"
+  ],
+  "description": "Various NetMQ extensions",
+
+  "packOptions": {
+    "projectUrl": "https://github.com/aquilae/Aq.NetMQ",
+    "repository": {
+      "type": "git",
+      "url": "https://github.com/aquilae/Aq.NetMQ"
+    },
+    "summary": "Various NetMQ extensions",
+    "licenseUrl": "https://github.com/aquilae/Aq.NetMQ/blob/master/LICENSE",
+    "owners": [
+      "Ilya \"aq\" Kozlov"
+    ],
+    "tags": [
+      "NetMQ",
+      "ZeroMQ"
+    ]
+  },
+
+  "configurations": {
+    "Debug": {
+      "buildOptions": {
+        "define": [
+          "DEBUG",
+          "TRACE"
+        ],
+        "optimize": false,
+        "warningsAsErrors": true
+      }
+    },
+    "Release": {
+      "buildOptions": {
+        "define": [
+          "RELEASE"
+        ],
+        "optimize": true,
+        "warningsAsErrors": true
+      }
+    }
+  },
+
+  "dependencies": {
+    "NetMQ": "4.0.0-rc5"
+  },
+
+  "frameworks": {
+    "net35": {
+      "buildOptions": {
+        "define": [
+          "REFLECTION_OLD",
+          "NET35"
+        ]
+      }
+    },
+    "net46": {
+      "buildOptions": {
+        "define": [
+          "REFLECTION_OLD"
+        ]
+      },
+      "dependencies": {
+      }
+    },
+    "netstandard1.3": {
+      "imports": "dnxcore50",
+      "buildOptions": {
+        "define": [
+          "REFLECTION_NEW"
+        ]
+      },
+      "dependencies": {
+        "NETStandard.Library": "[1.3,]"
+      }
+    }
+  }
+}

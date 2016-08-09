@@ -1,0 +1,50 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{8C80B1C8-4F37-49DF-8460-E3D603DFE7E8}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{FE1D8926-4329-42F5-BCB9-FFD89253AFED}"
+	ProjectSection(SolutionItems) = preProject
+		.gitattributes = .gitattributes
+		.gitignore = .gitignore
+		global.json = global.json
+	EndProjectSection
+EndProject
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Aq.NetMQ", "src\Aq.NetMQ\Aq.NetMQ.xproj", "{57BF1ACB-DAEE-4441-87BC-1B1284246EC7}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{5C6FFB93-96AD-4CCC-AC63-FB6E3C3F99C6}"
+EndProject
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Aq.NetMQ.Benchmark", "test\Aq.NetMQ.Benchmark\Aq.NetMQ.Benchmark.xproj", "{672BEDBF-0697-48CD-9649-2C9CAA4DB61F}"
+EndProject
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Aq.NetMQ.Showcase", "test\Aq.NetMQ.Showcase\Aq.NetMQ.Showcase.xproj", "{A4630A50-D2B2-4C06-A1B1-1F78B7E31967}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{57BF1ACB-DAEE-4441-87BC-1B1284246EC7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{57BF1ACB-DAEE-4441-87BC-1B1284246EC7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{57BF1ACB-DAEE-4441-87BC-1B1284246EC7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{57BF1ACB-DAEE-4441-87BC-1B1284246EC7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{672BEDBF-0697-48CD-9649-2C9CAA4DB61F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{672BEDBF-0697-48CD-9649-2C9CAA4DB61F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{672BEDBF-0697-48CD-9649-2C9CAA4DB61F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{672BEDBF-0697-48CD-9649-2C9CAA4DB61F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A4630A50-D2B2-4C06-A1B1-1F78B7E31967}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A4630A50-D2B2-4C06-A1B1-1F78B7E31967}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A4630A50-D2B2-4C06-A1B1-1F78B7E31967}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A4630A50-D2B2-4C06-A1B1-1F78B7E31967}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{57BF1ACB-DAEE-4441-87BC-1B1284246EC7} = {8C80B1C8-4F37-49DF-8460-E3D603DFE7E8}
+		{672BEDBF-0697-48CD-9649-2C9CAA4DB61F} = {5C6FFB93-96AD-4CCC-AC63-FB6E3C3F99C6}
+		{A4630A50-D2B2-4C06-A1B1-1F78B7E31967} = {5C6FFB93-96AD-4CCC-AC63-FB6E3C3F99C6}
+	EndGlobalSection
+EndGlobal
