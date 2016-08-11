@@ -30,6 +30,34 @@
     "PlainRoundtrip.RequestDispatcher -y tweaked ThreadPool": {
       "commandName": "Project",
       "commandLineArgs": "PlainRoundtrip.RequestDispatcher -y --pool-workers-min=32 --pool-completion-port-min=32 --pool-workers-max=32 --pool-completion-port-max=32"
+    },
+    "HttpGet.NetMQPoller": {
+      "commandName": "Project",
+      "commandLineArgs": "HttpGet.NetMQPoller"
+    },
+    "HttpGet.NetMQPoller -c 1000  --http-roundtrip-count=10": {
+      "commandName": "Project",
+      "commandLineArgs": "HttpGet.NetMQPoller -c 1000 --http-roundtrip-count=10"
+    },
+    "HttpGet.NetMQPoller -c 1000 --http-roundtrip-count=100": {
+      "commandName": "Project",
+      "commandLineArgs": "HttpGet.NetMQPoller -c 1000 --http-roundtrip-count=100"
+    },
+    "HttpGet.AsyncPoller": {
+      "commandName": "Project",
+      "commandLineArgs": "HttpGet.AsyncPoller"
+    },
+    "HttpGet.RequestDispatcher": {
+      "commandName": "Project",
+      "commandLineArgs": "HttpGet.RequestDispatcher"
+    },
+    "HttpGet.RequestDispatcher -c 1000  --http-roundtrip-count=10": {
+      "commandName": "Project",
+      "commandLineArgs": "HttpGet.RequestDispatcher -c 1000  --http-roundtrip-count=10"
+    },
+    "HttpGet.RequestDispatcher -c 1000 --http-roundtrip-count=100": {
+      "commandName": "Project",
+      "commandLineArgs": "HttpGet.RequestDispatcher -c 1000 --http-roundtrip-count=100"
     }
   }
 }
