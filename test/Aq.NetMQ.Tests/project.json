@@ -15,14 +15,6 @@
   "frameworks": {
     "net461": {
       "dependencies": {
-        /*
-        "System.Console": "4.*",
-        "System.Data.Common": "4.*",
-        "System.Runtime": "4.*",
-        "System.Threading.Tasks": "4.*",
-        "System.Threading.Tasks.Dataflow": "4.*",
-        "System.Xml.XPath": "4.*"
-        */
       }
     }
   }
