@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Text;
 using System.Threading.Tasks;
 using NetMQ;
 using NetMQ.Sockets;
@@ -7,6 +8,40 @@ using NetMQ.Sockets;
 namespace Aq.NetMQ.Showcase {
     public class Program {
         public static void Main(string[] args) {
+            RunRequestDispatcher();
+        }
+
+        static void RunRequestDispatcher() {
+            PairSocket server, client;
+            PairSocket.CreateSocketPair(out server, out client);
+
+            var tcs = new TaskCompletionSource<string>();
+
+            RequestHandler requestHandler = ctx => {
+                var message = ctx.Request.First.ConvertToString();
+                Console.WriteLine("received {0}", message);
+                tcs.SetResult(message);
+                return tcs.Task;
+            };
+
+            using (server)
+            using (client)
+            using (var dispatcher = new RequestDispatcher(requestHandler)) {
+                dispatcher.Add(server);
+
+                var dispatch = dispatcher.Start();
+                
+                client.SendFrame("Hello");
+                Console.WriteLine("sent Hello");
+
+                Debug.Assert("Hello" == tcs.Task.Result);
+
+                dispatch.Complete();
+                dispatch.Completion.Wait();
+            }
+        }
+
+        static void RunAsyncPoller() {
             PairSocket server, client;
             PairSocket.CreateSocketPair(out server, out client);
 

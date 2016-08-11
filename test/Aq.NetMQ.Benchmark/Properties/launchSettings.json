@@ -14,6 +14,22 @@
     "PlainRoundtrip.AsyncPoller": {
       "commandName": "Project",
       "commandLineArgs": "PlainRoundtrip.AsyncPoller"
+    },
+    "PlainRoundtrip.RequestDispatcher": {
+      "commandName": "Project",
+      "commandLineArgs": "PlainRoundtrip.RequestDispatcher"
+    },
+    "PlainRoundtrip.RequestDispatcher tweaked ThreadPool": {
+      "commandName": "Project",
+      "commandLineArgs": "PlainRoundtrip.RequestDispatcher --pool-workers-min=32 --pool-completion-port-min=32 --pool-workers-max=32 --pool-completion-port-max=32"
+    },
+    "PlainRoundtrip.RequestDispatcher -y": {
+      "commandName": "Project",
+      "commandLineArgs": "PlainRoundtrip.RequestDispatcher -y"
+    },
+    "PlainRoundtrip.RequestDispatcher -y tweaked ThreadPool": {
+      "commandName": "Project",
+      "commandLineArgs": "PlainRoundtrip.RequestDispatcher -y --pool-workers-min=32 --pool-completion-port-min=32 --pool-workers-max=32 --pool-completion-port-max=32"
     }
   }
 }

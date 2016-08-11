@@ -33,7 +33,7 @@ namespace Aq.NetMQ.Benchmark.PlainRoundtrip {
 
                 this.SetupBarrier();
 
-                GC.Collect(2, GCCollectionMode.Forced, true, true);
+                GC.Collect(2, GCCollectionMode.Forced, true);
                 stopwatch.Start();
 
                 this.StartBarrier();

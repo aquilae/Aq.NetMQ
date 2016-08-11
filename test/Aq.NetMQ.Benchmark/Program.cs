@@ -12,6 +12,7 @@ namespace Aq.NetMQ.Benchmark {
                 [$"{nameof (PlainRoundtrip)}.{nameof (PlainRoundtrip.Naive)}"] = new PlainRoundtrip.Naive.Benchmark(),
                 [$"{nameof (PlainRoundtrip)}.{nameof (PlainRoundtrip.NetMQPoller)}"] = new PlainRoundtrip.NetMQPoller.Benchmark(),
                 [$"{nameof (PlainRoundtrip)}.{nameof (PlainRoundtrip.AsyncPoller)}"] = new PlainRoundtrip.AsyncPoller.Benchmark(),
+                [$"{nameof (PlainRoundtrip)}.{nameof (PlainRoundtrip.RequestDispatcher)}"] = new PlainRoundtrip.RequestDispatcher.Benchmark(),
             };
 
             IBenchmark benchmark;

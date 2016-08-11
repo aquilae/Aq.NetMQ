@@ -37,18 +37,14 @@ namespace Aq.NetMQ.Util {
         }
 
         private static Func<NetMQSocket, Socket> CreateGetHandleDelegate() {
-#if REFLECTION_OLD
-            var netMQSocketType = typeof (NetMQSocket);
-            var mSocket = netMQSocketType.GetProperty("SocketHandle", BindingFlags.Instance | BindingFlags.NonPublic);
-            var mHandle = mSocket.PropertyType.GetProperty("Handle", BindingFlags.Instance | BindingFlags.Public);
-
-#elif REFLECTION_NEW
+#if NETCORE
             var netMQSocketType = typeof (NetMQSocket).GetTypeInfo();
             var mSocket = netMQSocketType.DeclaredProperties.First(x => x.Name == "SocketHandle");
             var mHandle = mSocket.PropertyType.GetTypeInfo().DeclaredProperties.First(x => x.Name == "Handle");
-
 #else
-            throw new System.NotSupportedException("Reflection is not supported");
+            var netMQSocketType = typeof (NetMQSocket);
+            var mSocket = netMQSocketType.GetProperty("SocketHandle", BindingFlags.Instance | BindingFlags.NonPublic);
+            var mHandle = mSocket.PropertyType.GetProperty("Handle", BindingFlags.Instance | BindingFlags.Public);
 #endif
 
             var arg0 = Expression.Parameter(typeof (NetMQSocket), "this");
@@ -64,16 +60,12 @@ namespace Aq.NetMQ.Util {
         private static Func<NetMQSocket, PollEvents> CreateGetPollEventsDelegate() {
             var intType = typeof (int);
 
-#if REFLECTION_OLD
-            var netMQSocketType = typeof (NetMQSocket);
-            var getPollEventsInfo = netMQSocketType.GetMethod("GetPollEvents", BindingFlags.Instance | BindingFlags.NonPublic);
-
-#elif REFLECTION_NEW
+#if NETCORE
             var netMQSocketType = typeof (NetMQSocket).GetTypeInfo();
             var getPollEventsInfo = netMQSocketType.DeclaredMethods.First(x => x.Name == "GetPollEvents");
-
 #else
-            throw new System.NotSupportedException("Reflection is not supported");
+            var netMQSocketType = typeof (NetMQSocket);
+            var getPollEventsInfo = netMQSocketType.GetMethod("GetPollEvents", BindingFlags.Instance | BindingFlags.NonPublic);
 #endif
 
             var arg0 = Expression.Parameter(typeof (NetMQSocket), "this");
@@ -89,18 +81,14 @@ namespace Aq.NetMQ.Util {
         private static Func<NetMQSocket, int, int> CreateGetSocketOptionDelegate() {
             var intType = typeof (int);
 
-#if REFLECTION_OLD
-            var netMQSocketType = typeof (NetMQSocket);
-            var zmqSocketOptionType = netMQSocketType.Assembly.GetTypes().First(x => x.Name == "ZmqSocketOption");
-            var getSocketOptionInfo = netMQSocketType.GetMethod("GetSocketOption", BindingFlags.Instance | BindingFlags.NonPublic);
-
-#elif REFLECTION_NEW
+#if NETCORE
             var netMQSocketType = typeof (NetMQSocket).GetTypeInfo();
             var zmqSocketOptionType = netMQSocketType.Assembly.DefinedTypes.First(x => x.Name == "ZmqSocketOption").AsType();
             var getSocketOptionInfo = netMQSocketType.DeclaredMethods.First(x => x.Name == "GetSocketOption");
-
 #else
-            throw new System.NotSupportedException("Reflection is not supported");
+            var netMQSocketType = typeof (NetMQSocket);
+            var zmqSocketOptionType = netMQSocketType.Assembly.GetTypes().First(x => x.Name == "ZmqSocketOption");
+            var getSocketOptionInfo = netMQSocketType.GetMethod("GetSocketOption", BindingFlags.Instance | BindingFlags.NonPublic);
 #endif
 
             var arg0 = Expression.Parameter(typeof (NetMQSocket), "this");
@@ -120,16 +108,12 @@ namespace Aq.NetMQ.Util {
         }
 
         private static Action<NetMQSocket, object, PollEvents> CreateInvokeEventsDelegate() {
-#if REFLECTION_OLD
-            var netMQSocketType = typeof (NetMQSocket);
-            var invokeEventsInfo = netMQSocketType.GetMethod("InvokeEvents", BindingFlags.Instance | BindingFlags.NonPublic);
-
-#elif REFLECTION_NEW
+#if NETCORE
             var netMQSocketType = typeof (NetMQSocket).GetTypeInfo();
             var invokeEventsInfo = netMQSocketType.DeclaredMethods.First(x => x.Name == "InvokeEvents");
-
 #else
-            throw new System.NotSupportedException("Reflection is not supported");
+            var netMQSocketType = typeof (NetMQSocket);
+            var invokeEventsInfo = netMQSocketType.GetMethod("InvokeEvents", BindingFlags.Instance | BindingFlags.NonPublic);
 #endif
 
             var arg0 = Expression.Parameter(typeof (NetMQSocket), "this");
@@ -149,16 +133,14 @@ namespace Aq.NetMQ.Util {
         }
 
         private static Action<NetMQSocket, EventHandler<NetMQSocketEventArgs>> CreateAddEventsChangedHandlerDelegate() {
-#if REFLECTION_OLD
-            var netMQSocketType = typeof (NetMQSocket);
-            var eventsChangedInfo = netMQSocketType.GetEvent("EventsChanged", BindingFlags.Instance | BindingFlags.NonPublic);
-
-#elif REFLECTION_NEW
+#if NETCORE
             var netMQSocketType = typeof (NetMQSocket).GetTypeInfo();
             var eventsChangedInfo = netMQSocketType.DeclaredEvents.First(x => x.Name == "EventsChanged");
-
+            var addMethod = eventsChangedInfo.AddMethod;
 #else
-            throw new System.NotSupportedException("Reflection is not supported");
+            var netMQSocketType = typeof (NetMQSocket);
+            var eventsChangedInfo = netMQSocketType.GetEvent("EventsChanged", BindingFlags.Instance | BindingFlags.NonPublic);
+            var addMethod = eventsChangedInfo.AddMethod;
 #endif
 
             var arg0 = Expression.Parameter(typeof (NetMQSocket), "this");
@@ -166,7 +148,7 @@ namespace Aq.NetMQ.Util {
             var lambda = Expression.Lambda(
                 Expression.Call(
                     arg0,
-                    eventsChangedInfo.AddMethod,
+                    addMethod,
                     arg1),
                 arg0,
                 arg1);
@@ -175,16 +157,14 @@ namespace Aq.NetMQ.Util {
         }
 
         private static Action<NetMQSocket, EventHandler<NetMQSocketEventArgs>> CreateRemoveEventsChangedHandlerDelegate() {
-#if REFLECTION_OLD
-            var netMQSocketType = typeof (NetMQSocket);
-            var eventsChangedInfo = netMQSocketType.GetEvent("EventsChanged", BindingFlags.Instance | BindingFlags.NonPublic);
-
-#elif REFLECTION_NEW
+#if NETCORE
             var netMQSocketType = typeof (NetMQSocket).GetTypeInfo();
             var eventsChangedInfo = netMQSocketType.DeclaredEvents.First(x => x.Name == "EventsChanged");
-
+            var removeMethod = eventsChangedInfo.RemoveMethod;
 #else
-            throw new System.NotSupportedException("Reflection is not supported");
+            var netMQSocketType = typeof (NetMQSocket);
+            var eventsChangedInfo = netMQSocketType.GetEvent("EventsChanged", BindingFlags.Instance | BindingFlags.NonPublic);
+            var removeMethod = eventsChangedInfo.RemoveMethod;
 #endif
 
             var arg0 = Expression.Parameter(typeof (NetMQSocket), "this");
@@ -192,7 +172,7 @@ namespace Aq.NetMQ.Util {
             var lambda = Expression.Lambda(
                 Expression.Call(
                     arg0,
-                    eventsChangedInfo.RemoveMethod,
+                    removeMethod,
                     arg1),
                 arg0,
                 arg1);

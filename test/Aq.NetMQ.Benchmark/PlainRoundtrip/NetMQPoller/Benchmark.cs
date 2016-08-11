@@ -49,7 +49,7 @@ namespace Aq.NetMQ.Benchmark.PlainRoundtrip.NetMQPoller {
                 this.CompleteBarrier();
             }
 
-            return Task.CompletedTask;
+            return Task.FromResult(0);
         }
     }
 }

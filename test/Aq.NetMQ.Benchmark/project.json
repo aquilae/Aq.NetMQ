@@ -1,7 +1,8 @@
 ﻿{
   "version": "1.0.0-*",
   "buildOptions": {
-    "emitEntryPoint": true
+    "emitEntryPoint": true,
+    "warningsAsErrors": false
   },
 
   "dependencies": {
@@ -10,7 +11,7 @@
   },
 
   "frameworks": {
-    "net46": {
+    "net45": {
     } /*,
     "netcoreapp1.0": {
       "imports": "dnxcore50",

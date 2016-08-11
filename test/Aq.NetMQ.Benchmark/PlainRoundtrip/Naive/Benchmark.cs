@@ -19,6 +19,8 @@ namespace Aq.NetMQ.Benchmark.PlainRoundtrip.Naive {
                 this.StartBarrier();
 
                 for (var i = 0; i < messageCount; ++i) {
+                    Task.Delay(1).Wait();
+
                     msg.InitEmpty();
                     socket.Receive(ref msg);
 
@@ -37,7 +39,7 @@ namespace Aq.NetMQ.Benchmark.PlainRoundtrip.Naive {
                 this.CompleteBarrier();
             }
 
-            return Task.CompletedTask;
+            return Task.FromResult(0);
         }
     }
 }
