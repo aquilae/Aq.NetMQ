@@ -2,9 +2,11 @@
 
 ## Supplemental library for NetMQ project
 
-### `Aq.NetMQ.AsyncPoller`
+### API
 
-#### Asynchronous poller for `NetMQSocket` with `Dataflow`-like API
+#### `Aq.NetMQ.AsyncPoller`
+
+##### Asynchronous poller for `NetMQSocket` with `Dataflow`-like API
 
 - `void AsyncPoller.Add(NetMQSocket socket)`  
   Adds `socket` to poller on next iteration. If poll is in progress, effective starting from next iteration.
@@ -15,9 +17,9 @@
 - `IRunningAsyncPoller AsyncPoller.Start()`  
   Starts the poller
 
-### `Aq.NetMQ.IRunningAsyncPoller`
+#### `Aq.NetMQ.IRunningAsyncPoller`
 
-#### Represents running state of `AsyncPoller`
+##### Represents running state of `AsyncPoller`
 
 - `Task IRunningAsyncPoller.Completion { get; }`  
   The task holding poll result
@@ -25,9 +27,9 @@
 - `void IRunningAsyncPoller.Complete()`  
   Signals the poller to spin, if necessary, and stop.
 
-### `Aq.NetMQ.RequestDispatcher`
+#### `Aq.NetMQ.RequestDispatcher`
 
-#### Asynchronous request dispatcher for NetMQ sockets
+##### Asynchronous request dispatcher for NetMQ sockets
 
 - `Task RequestHandler(IRequestHandlerContext context)`  
   Delegate used to handle incoming requests
@@ -48,9 +50,9 @@
   Starts the dispatcher
 
 
-### `Aq.NetMQ.IRunningRequestDispatcher`
+#### `Aq.NetMQ.IRunningRequestDispatcher`
 
-#### Represents running state of `AsyncPoller`
+##### Represents running state of `AsyncPoller`
 
 - `Task IRunningRequestDispatcher.Completion { get; }`
   The task holding dispatch result
@@ -58,7 +60,7 @@
 - `void IRunningRequestDispatcher.Complete()`  
   Dispatcher will stop accepting new requests, wait for pending handlers to finish, then exit. See also `AsyncPoller.Complete()`
 
-### `Aq.NetMQ.IRequestHandlerContext`
+#### `Aq.NetMQ.IRequestHandlerContext`
 
 - `RequestDispatcher IRequestHandlerContext.Dispatcher { get; }`  
   Dispatcher calling the handler
