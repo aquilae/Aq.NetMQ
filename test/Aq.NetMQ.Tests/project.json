@@ -1,0 +1,29 @@
+﻿{
+  "version": "1.0.0-*",
+
+  "testRunner": "nunit",
+
+  "dependencies": {
+    "NetMQ": "4.0.0-rc5",
+    "NUnit": "3.4.1",
+    "dotnet-test-nunit": "3.4.0-beta-2",
+    "Aq.NetMQ": {
+      "target": "project"
+    }
+  },
+
+  "frameworks": {
+    "net461": {
+      "dependencies": {
+        /*
+        "System.Console": "4.*",
+        "System.Data.Common": "4.*",
+        "System.Runtime": "4.*",
+        "System.Threading.Tasks": "4.*",
+        "System.Threading.Tasks.Dataflow": "4.*",
+        "System.Xml.XPath": "4.*"
+        */
+      }
+    }
+  }
+}
