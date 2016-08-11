@@ -2,11 +2,59 @@
 
 ## Supplemental library for NetMQ project
 
+### Usage
+
+#### `Aq.NetMQ.AsyncPoller`
+
+```csharp
+class Program {
+  static async Task MainAsync() {
+    PairSocket server, client;
+    PairSocket.CreateSocketPair(out server, out client);
+  
+    using (server)
+    using (client)
+    using (var dispatcher = new RequestDispatcher(RequestHandler)) {
+      server.Bind("ipc://example");
+      dispatcher.Add(server);
+      
+      var dispatch = dispatcher.Start();
+      
+      client.Connect("ipc://example");
+      
+      client.SendFrame("Ping");
+      Debug.Assert("Pong" == client.ReceiveFrameString());
+      
+      client.SendFrame("Error"); // will cause dispatch.Completion to fail
+      
+      dispatch.Complete();
+      await dispatch.Completion; // will throw NotImplementedException
+    }
+  }
+  
+  static async Task RequestHandler(IRequestHandlerContext context) {
+    if ("Ping" == context.Request.First.ConvertToString()) {
+      var response = new NetMQMessage();
+      response.Append("Pong");
+      await context.SendAsync(response);
+    }
+    else {
+      throw new NotImplementedException();
+    }
+  }
+}
+```
+
 ### API
 
 #### `Aq.NetMQ.AsyncPoller`
 
 ##### Asynchronous poller for `NetMQSocket` with `Dataflow`-like API
+
+- `IRunningRequestDispatcher AsyncPoller.IsRunning { get; }`
+
+- `IRunningRequestDispatcher AsyncPoller.Running { get; }`  
+  When running, returns current `IRunningReuqestDispatcher` instance
 
 - `void AsyncPoller.Add(NetMQSocket socket)`  
   Adds `socket` to poller on next iteration. If poll is in progress, effective starting from next iteration.
