@@ -79,7 +79,7 @@ class Program {
 
 ##### Asynchronous request dispatcher for NetMQ sockets
 
-- `Task RequestHandler(IRequestHandlerContext context)`  
+- `delegate Task RequestHandler(IRequestHandlerContext context)`  
   Delegate used to handle incoming requests
 
 - `RequestDispatcher(RequestHandler requestHandler)`  
