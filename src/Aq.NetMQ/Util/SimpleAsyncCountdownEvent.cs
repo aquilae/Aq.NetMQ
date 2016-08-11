@@ -10,6 +10,9 @@ namespace Aq.NetMQ.Util {
 
         public void Complete() {
             this._completing = true;
+            if (this._counter <= 0) {
+                this.CompletionSource.TrySetComplete();
+            }
         }
 
         public void Increment() {
