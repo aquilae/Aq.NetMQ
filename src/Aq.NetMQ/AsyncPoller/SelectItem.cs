@@ -29,14 +29,14 @@ namespace Aq.NetMQ {
 
         public override string ToString() {
             var check =
-                (this.Events.HasFlag(PollEvents.PollIn) ? "R" : "") +
-                (this.Events.HasFlag(PollEvents.PollOut) ? "W" : "") +
-                (this.Events.HasFlag(PollEvents.PollError) ? "E" : "");
+                (this.Events.HasFlagFast(PollEvents.PollIn) ? "R" : "") +
+                (this.Events.HasFlagFast(PollEvents.PollOut) ? "W" : "") +
+                (this.Events.HasFlagFast(PollEvents.PollError) ? "E" : "");
 
             var result =
-                (this.Result.HasFlag(PollEvents.PollIn) ? "R" : "") +
-                (this.Result.HasFlag(PollEvents.PollOut) ? "W" : "") +
-                (this.Result.HasFlag(PollEvents.PollError) ? "E" : "");
+                (this.Result.HasFlagFast(PollEvents.PollIn) ? "R" : "") +
+                (this.Result.HasFlagFast(PollEvents.PollOut) ? "W" : "") +
+                (this.Result.HasFlagFast(PollEvents.PollError) ? "E" : "");
 
             return $"[SelectItem #{this.Id} {check}=>{result}]";
         }

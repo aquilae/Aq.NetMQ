@@ -1,17 +1,26 @@
-﻿using System.Collections.Concurrent;
+﻿using System;
+using System.Collections.Concurrent;
 using System.Linq;
 using Aq.NetMQ.Util;
 using NetMQ;
 using NetMQ.Sockets;
 
 namespace Aq.NetMQ {
-    public class AsyncPoller {
+    public class AsyncPoller : IDisposable {
         public AsyncPoller() {
             PairSocket.CreateSocketPair(
                 out this._controlBackend,
                 out this._controlFrontend);
 
             this.SelectItems = new ConcurrentDictionary<NetMQSocket, SelectItem>();
+        }
+
+        public void Dispose() {
+            this.ControlFrontend.Close();
+            this.ControlBackend.Close();
+
+            this.ControlFrontend.Dispose();
+            this.ControlBackend.Dispose();
         }
 
         public IRunningAsyncPoller Start() {

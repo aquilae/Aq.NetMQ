@@ -140,15 +140,7 @@ namespace Aq.NetMQ {
         }
 
         private void Select() {
-#if NET35
-            // from NetMQ\src\NetMQ\Core\Utils\SocketUtility.cs:
-            // .NET 3.5 has a bug, such that -1 is not blocking the select call
-            // therefore we use here instead the maximum integer value.
-            
-            const int selectTimeout = int.MaxValue;
-#else
             const int selectTimeout = -1;
-#endif
 
             //Console.WriteLine("~ IN: {0}", string.Join(" ", this.State.CheckRead.Select(x => this.State.Map[x].Id)));
             //Console.WriteLine("~ OUT: {0}", string.Join(" ", this.State.CheckWrite.Select(x => this.State.Map[x].Id)));
@@ -160,11 +152,11 @@ namespace Aq.NetMQ {
         private void ProcessSelectResult() {
             foreach (var handle in this.State.CheckRead) {
                 var item = this.State.Map[handle];
-
+                
                 //Console.WriteLine($"? {item.Id} < POLLIN");
 
                 var events = item.Socket.GetEventsOption();
-                if (events.HasFlag(PollEvents.PollIn)) {
+                if (events.HasFlagFast(PollEvents.PollIn)) {
                     item.Result |= PollEvents.PollIn;
 
                     //Console.WriteLine($"! {item.Id} < POLLIN");
@@ -177,7 +169,7 @@ namespace Aq.NetMQ {
                 //Console.WriteLine($"? {item.Id} < POLLOUT");
 
                 var events = item.Socket.GetEventsOption();
-                if (events.HasFlag(PollEvents.PollOut)) {
+                if (events.HasFlagFast(PollEvents.PollOut)) {
                     item.Result |= PollEvents.PollOut;
 
                     //Console.WriteLine($"! {item.Id} < POLLOUT");
@@ -190,7 +182,7 @@ namespace Aq.NetMQ {
                 //Console.WriteLine($"? {item.Id} < POLLERROR");
 
                 var events = item.Socket.GetEventsOption();
-                if (events.HasFlag(PollEvents.PollError)) {
+                if (events.HasFlagFast(PollEvents.PollError)) {
                     item.Result |= PollEvents.PollError;
 
                     //Console.WriteLine($"! {item.Id} < POLLERROR");
@@ -203,23 +195,23 @@ namespace Aq.NetMQ {
 
             var control = items[0];
 
-            if (control.Result.HasFlag(PollEvents.PollError)) {
+            if (control.Result.HasFlagFast(PollEvents.PollError)) {
                 throw new Exception("Poller control socket failure");
             }
 
-            if (control.Result.HasFlag(PollEvents.PollIn)) {
+            if (control.Result.HasFlagFast(PollEvents.PollIn)) {
                 control.Socket.InvokeEvents(this, control.Result);
             }
 
             if (!this.State.Canceled) {
                 foreach (var item in items.Values) {
                     if (item != control) {
-                        if (item.Result.HasFlag(PollEvents.PollError)) {
+                        if (item.Result.HasFlagFast(PollEvents.PollError)) {
                             // TODO
                         }
 
-                        if (item.Result.HasFlag(PollEvents.PollIn) ||
-                            item.Result.HasFlag(PollEvents.PollOut)) {
+                        if (item.Result.HasFlagFast(PollEvents.PollIn) ||
+                            item.Result.HasFlagFast(PollEvents.PollOut)) {
 
                             item.Socket.InvokeEvents(this, item.Result);
                         }
@@ -268,15 +260,15 @@ namespace Aq.NetMQ {
                     item.Result = PollEvents.None;
 
                     if (realSelect) {
-                        if (item.Events.HasFlag(PollEvents.PollIn)) {
+                        if (item.Events.HasFlagFast(PollEvents.PollIn)) {
                             this.CheckRead.Add(item.Handle);
                             isEmpty = false;
                         }
-                        if (item.Events.HasFlag(PollEvents.PollOut)) {
+                        if (item.Events.HasFlagFast(PollEvents.PollOut)) {
                             this.CheckWrite.Add(item.Handle);
                             isEmpty = false;
                         }
-                        if (item.Events.HasFlag(PollEvents.PollError)) {
+                        if (item.Events.HasFlagFast(PollEvents.PollError)) {
                             this.CheckError.Add(item.Handle);
                             isEmpty = false;
                         }
@@ -284,24 +276,24 @@ namespace Aq.NetMQ {
                     else {
                         var events = item.Socket.GetEventsOption();
 
-                        if (events.HasFlag(PollEvents.PollIn)) {
-                            if (item.Events.HasFlag(PollEvents.PollIn)) {
+                        if (events.HasFlagFast(PollEvents.PollIn)) {
+                            if (item.Events.HasFlagFast(PollEvents.PollIn)) {
                                 this.CheckRead.Add(item.Handle);
                                 item.Result |= PollEvents.PollIn;
                                 isEmpty = false;
                             }
                         }
 
-                        if (events.HasFlag(PollEvents.PollOut)) {
-                            if (item.Events.HasFlag(PollEvents.PollOut)) {
+                        if (events.HasFlagFast(PollEvents.PollOut)) {
+                            if (item.Events.HasFlagFast(PollEvents.PollOut)) {
                                 this.CheckWrite.Add(item.Handle);
                                 item.Result |= PollEvents.PollOut;
                                 isEmpty = false;
                             }
                         }
 
-                        if (events.HasFlag(PollEvents.PollError)) {
-                            if (item.Events.HasFlag(PollEvents.PollError)) {
+                        if (events.HasFlagFast(PollEvents.PollError)) {
+                            if (item.Events.HasFlagFast(PollEvents.PollError)) {
                                 this.CheckError.Add(item.Handle);
                                 item.Result |= PollEvents.PollError;
                                 isEmpty = false;
