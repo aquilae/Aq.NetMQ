@@ -126,6 +126,9 @@ namespace Aq.NetMQ {
 
                 await this.RequestHandler(context);
             }
+            catch {
+                this.Countdown.Complete();
+            }
             finally {
                 this.Countdown.Decrement();
             }
