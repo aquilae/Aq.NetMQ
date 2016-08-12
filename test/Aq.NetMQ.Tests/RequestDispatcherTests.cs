@@ -178,6 +178,53 @@ namespace Aq.NetMQ.Tests {
             await dispatch.Completion;
         }
 
+        [Test]
+        public async Task RequestHandlerShouldCompleteUponExceptionInHandler() {
+            this.Dispatcher.RequestHandler = ctx => {
+                throw new ApplicationException();
+            };
+
+            var dispatch = this.Dispatcher.Start();
+
+            this.Client.SendFrameEmpty();
+
+            await Task.Delay(100);
+
+            Assert.That(dispatch.Completion.IsFaulted, "dispatch.Completion.IsFaulted");
+            var aggregateException = Assert.ThrowsAsync<AggregateException>(
+                () => dispatch.Completion, "await dispatch.Completion throws AggregateException");
+
+            Assert.IsInstanceOf<ApplicationException>(
+                aggregateException.InnerException,
+                "aggregateException.InnerException is ApplicationException");
+
+            Assert.AreEqual(1, aggregateException.InnerExceptions.Count, "1 == aggregateException.InnerExceptions.Count");
+        }
+
+        [Test]
+        public async Task RequestHandlerShouldCompleteUponExceptionInAsyncHandler() {
+            this.Dispatcher.RequestHandler = async ctx => {
+                await Task.Yield();
+                throw new ApplicationException();
+            };
+
+            var dispatch = this.Dispatcher.Start();
+
+            this.Client.SendFrameEmpty();
+
+            await Task.Delay(100);
+
+            Assert.That(dispatch.Completion.IsFaulted, "dispatch.Completion.IsFaulted");
+            var aggregateException = Assert.ThrowsAsync<AggregateException>(
+                () => dispatch.Completion, "await dispatch.Completion throws AggregateException");
+
+            Assert.IsInstanceOf<ApplicationException>(
+                aggregateException.InnerException,
+                "aggregateException.InnerException is ApplicationException");
+
+            Assert.AreEqual(1, aggregateException.InnerExceptions.Count, "1 == aggregateException.InnerExceptions.Count");
+        }
+
         private PairSocket Server => this._server;
         private PairSocket Client => this._client;
         private RequestDispatcher Dispatcher => this._dispatcher;
