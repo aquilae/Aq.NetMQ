@@ -1,4 +1,6 @@
-﻿using System.Threading;
+﻿using System;
+using System.Collections.Concurrent;
+using System.Threading;
 using System.Threading.Tasks;
 using Aq.NetMQ.Util;
 
@@ -13,6 +15,7 @@ namespace Aq.NetMQ {
             this.Poller = poller;
             this.Countdown = countdown;
 
+            this.Exceptions = new ConcurrentQueue<Exception>();
             this.CancellationSource = new CancellationTokenSource();
 
             this.Completion = Task.Factory.StartNew(
@@ -24,26 +27,39 @@ namespace Aq.NetMQ {
             this.CancellationSource.Cancel();
         }
 
+        public void ThrowAsyncException(Exception exception) {
+            this.Exceptions.Enqueue(exception);
+            this.CancellationSource.Cancel();
+        }
+
         private AsyncPoller Poller { get; }
         private SimpleAsyncCountdownEvent Countdown { get; }
-
+        private ConcurrentQueue<Exception> Exceptions { get; }
         private CancellationTokenSource CancellationSource { get; }
 
         private async Task RunAsync() {
-            var stopEventSource = new TaskCompletionSource();
-            this.Cancellation.Register(stopEventSource.SetComplete); // does not need disposition
+            try {
+                var stopEventSource = new TaskCompletionSource();
+                using (this.Cancellation.Register(stopEventSource.SetComplete)) {
+                    var poll = this.Poller.Start();
 
-            using (this.CancellationSource) { // handles registration disposition
-                var poll = this.Poller.Start();
+                    await Task.WhenAny(poll.Completion, stopEventSource.Task);
 
-                await Task.WhenAny(poll.Completion, stopEventSource.Task);
+                    this.CancellationSource.Cancel();
+                    this.Countdown.Complete();
+                    await this.Countdown.Completion;
+                    poll.Complete();
 
-                this.CancellationSource.Cancel();
-                this.Countdown.Complete();
-                await this.Countdown.Completion;
-                poll.Complete();
-
-                await Task.WhenAll(poll.Completion/*, this.TaskManager.Completion*/);
+                    await Task.WhenAll(poll.Completion /*, this.TaskManager.Completion*/);
+                }
+            }
+            catch (Exception exc) {
+                this.Exceptions.Enqueue(exc);
+            }
+            finally {
+                if (this.Exceptions.Count > 0) {
+                    throw new AggregateException(this.Exceptions);
+                }
             }
         }
     }

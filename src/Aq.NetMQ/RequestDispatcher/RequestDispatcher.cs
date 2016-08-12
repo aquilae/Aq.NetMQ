@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Aq.NetMQ.Util;
 using NetMQ;
@@ -99,8 +100,6 @@ namespace Aq.NetMQ {
         private SimpleAsyncCountdownEvent Countdown { get; set; }
 
         private void OnSocketReceiveReady(object sender, NetMQSocketEventArgs eventArgs) {
-            //const TaskCreationOptions taskCreationOptions = TaskCreationOptions.DenyChildAttach;
-
             if (eventArgs.Socket.TryReceive(ref this._msg, TimeSpan.Zero)) {
                 var message = new NetMQMessage();
                 var hasMore = this._msg.HasMore;
@@ -118,6 +117,7 @@ namespace Aq.NetMQ {
 
         private async void HandleRequestAsync(NetMQSocket socket, NetMQMessage message) {
             this.Countdown.Increment();
+
             try {
                 var context = new RequestHandlerContext(
                     this, socket, this.Dispatch.Cancellation);
@@ -126,8 +126,27 @@ namespace Aq.NetMQ {
 
                 await this.RequestHandler(context);
             }
-            catch {
-                this.Countdown.Complete();
+            catch (OperationCanceledException exc) {
+                if (this.Dispatch.Cancellation.IsCancellationRequested) {
+                    if (exc.CancellationToken == this.Dispatch.Cancellation) {
+                        return;
+                    }
+                }
+                this.Dispatch.ThrowAsyncException(exc);
+            }
+            catch (AggregateException exc) {
+                if (this.Dispatch.Cancellation.IsCancellationRequested) {
+                    if (exc.Flatten().InnerExceptions
+                        .Select(x => x as OperationCanceledException).Where(x => x != null)
+                        .All(x => x.CancellationToken == this.Dispatch.Cancellation)) {
+
+                        return;
+                    }
+                }
+                this.Dispatch.ThrowAsyncException(exc);
+            }
+            catch (Exception exc) {
+                this.Dispatch.ThrowAsyncException(exc);
             }
             finally {
                 this.Countdown.Decrement();
