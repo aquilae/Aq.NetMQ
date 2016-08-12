@@ -4,7 +4,7 @@
 
 ### Usage
 
-#### `Aq.NetMQ.AsyncPoller`
+#### `Aq.NetMQ.RequestDispatcher`
 
 ```csharp
 class Program {
