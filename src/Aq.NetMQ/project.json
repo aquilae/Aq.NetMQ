@@ -5,7 +5,7 @@
   "authors": [
     "Ilya \"aq\" Kozlov"
   ],
-  "description": "Various NetMQ extensions",
+  "description": "Supplemental library for NetMQ project",
 
   "packOptions": {
     "projectUrl": "https://github.com/aquilae/Aq.NetMQ",
@@ -13,7 +13,7 @@
       "type": "git",
       "url": "https://github.com/aquilae/Aq.NetMQ"
     },
-    "summary": "Various NetMQ extensions",
+    "summary": "Supplemental library for NetMQ project",
     "licenseUrl": "https://github.com/aquilae/Aq.NetMQ/blob/master/LICENSE",
     "owners": [
       "Ilya \"aq\" Kozlov"
@@ -68,7 +68,7 @@
       },
       "dependencies": {
         "NETStandard.Library": "1.6",
-        "System.Reflection.Emit": "4.*" 
+        "System.Reflection.Emit": "4.*"
       }
     }
   }
