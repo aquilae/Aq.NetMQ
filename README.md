@@ -100,7 +100,7 @@ class Program {
 
 #### `Aq.NetMQ.IRunningRequestDispatcher`
 
-##### Represents running state of `AsyncPoller`
+##### Represents running state of `RequestDispatcher`
 
 - `Task IRunningRequestDispatcher.Completion { get; }`
   The task holding dispatch result
